@@ -37,40 +37,33 @@ enum Log
         }
     }
     
-    static func info(_ descriptionString: String, shouldLogContext: Bool = true, file: String = #file, function: String = #function, line: Int = #line)
+    static func info(_ descriptionString: String, file: String = #file, function: String = #function, line: Int = #line)
     {
         let context = Context(file: file, function: function, line: line)
         
-        Log.handleLog(level: .info, outputString: descriptionString, shouldLogContext: shouldLogContext, context: context)
+        Log.handleLog(level: .info, outputString: descriptionString, context: context)
     }
     
-    static func warning(_ descriptionString: String, shouldLogContext: Bool = true, file: String = #file, function: String = #function, line: Int = #line)
+    static func warning(_ descriptionString: String, file: String = #file, function: String = #function, line: Int = #line)
     {
         let context = Context(file: file, function: function, line: line)
         
-        Log.handleLog(level: .warning, outputString: descriptionString, shouldLogContext: shouldLogContext, context: context)
+        Log.handleLog(level: .warning, outputString: descriptionString, context: context)
     }
     
-    static func error(_ descriptionString: String, shouldLogContext: Bool = true, file: String = #file, function: String = #function, line: Int = #line)
+    static func error(_ descriptionString: String, file: String = #file, function: String = #function, line: Int = #line)
     {
         let context = Context(file: file, function: function, line: line)
         
-        Log.handleLog(level: .error, outputString: descriptionString, shouldLogContext: shouldLogContext, context: context)
+        Log.handleLog(level: .error, outputString: descriptionString, context: context)
     }
     
-    fileprivate static func handleLog(level: LogLevel, outputString: String, shouldLogContext: Bool, context: Context)
+    fileprivate static func handleLog(level: LogLevel, outputString: String, context: Context)
     {
         let logComponents = ["[\(level.prefix)]", outputString]
         
-        var logString = logComponents.joined(separator: " ")
-        
-        if(shouldLogContext)
-        {
-            logString += " → \(context.description)"
-        }
-        
         #if DEBUG
-        print(logString)
+        print(logComponents.joined(separator: " ") + " → \(context.description)")
         #endif
     }
 }
